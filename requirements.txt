@@ -1,0 +1,4 @@
+starlette>=0.37,<2
+uvicorn>=0.29,<1
+# LLM calls use the Python standard library (urllib) — no SDK needed.
+# Pillow is only needed to regenerate the sample documents (assets/make_bill.py).

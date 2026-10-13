@@ -1,0 +1,466 @@
+{
+ "tasks": {
+  "T6505": {
+   "id": "T6505",
+   "intent": "PAY_BILL",
+   "bill": {
+    "readable": true,
+    "provider": "Demo Electricity",
+    "consumer_id": "DEMO456",
+    "amount": 6500,
+    "due_date": "2026-10-20",
+    "billing_period": "Sep 2026",
+    "units_consumed": 1420,
+    "summary": "Your electricity bill is ₹6,500, due on 20 October.",
+    "source": "mock"
+   },
+   "scenario": "normal",
+   "online": true,
+   "lang": "en",
+   "state": "COMPLETED",
+   "user_confirmed": true,
+   "guardian_approved": true,
+   "guardian": {
+    "name": "Ravi (son)",
+    "status": "approved",
+    "requested_at": 1791472221.618544,
+    "decided_at": 1791472231.4347699
+   },
+   "plan": [
+    {
+     "id": 1,
+     "action": "OPEN_PAGE",
+     "target": "/sandbox/index.html?scenario=normal",
+     "say": "Opening the Demo Electricity payment service.",
+     "learn": "Open your electricity company's app or website."
+    },
+    {
+     "id": 2,
+     "action": "READ",
+     "target": "page",
+     "say": "Checking that this is the real service.",
+     "learn": "Check the website name is correct before typing anything."
+    },
+    {
+     "id": 3,
+     "action": "TYPE",
+     "target": "consumer_id",
+     "say": "Typing your consumer number from the bill.",
+     "learn": "Type your consumer number. It is printed on your bill: DEMO456.",
+     "value": "DEMO456"
+    },
+    {
+     "id": 4,
+     "action": "CLICK",
+     "target": "fetch_bill",
+     "say": "Getting your bill from the service.",
+     "learn": "Tap 'Get bill'."
+    },
+    {
+     "id": 5,
+     "action": "READ",
+     "target": "amount_due",
+     "say": "Matching the amount with your paper bill.",
+     "learn": "Check the amount on screen is the same as your bill: ₹6,500."
+    },
+    {
+     "id": 6,
+     "action": "CONFIRM",
+     "target": "payment",
+     "say": "I need your approval.",
+     "learn": "Only continue if the amount and name are correct."
+    },
+    {
+     "id": 7,
+     "action": "CLICK",
+     "target": "pay",
+     "say": "Making the payment.",
+     "learn": "Tap 'Pay now'. If it asks for an OTP, type the OTP from your SMS yourself."
+    },
+    {
+     "id": 8,
+     "action": "READ",
+     "target": "result",
+     "say": "Checking the payment went through.",
+     "learn": "Wait for the green success screen and note the transaction number."
+    }
+   ],
+   "history": [
+    {
+     "state": "CREATED",
+     "note": "",
+     "t": 1791472208.715611
+    },
+    {
+     "state": "READ",
+     "note": "Your electricity bill is ₹6,500, due on 20 October.",
+     "t": 1791472208.716243
+    },
+    {
+     "state": "PLANNED",
+     "note": "8 steps",
+     "t": 1791472208.716585
+    },
+    {
+     "state": "RUNNING",
+     "note": "",
+     "t": 1791472209.083255
+    },
+    {
+     "state": "WAITING_CONFIRMATION",
+     "note": "I am about to pay ₹6,500 to Demo Electricity. Do you approve? This is a large amount, so I will also ask your family to approve.",
+     "t": 1791472215.366637
+    },
+    {
+     "state": "WAITING_GUARDIAN",
+     "note": "Ravi (son)",
+     "t": 1791472221.618554
+    },
+    {
+     "state": "RUNNING",
+     "note": "guardian approved",
+     "t": 1791472231.4347782
+    },
+    {
+     "state": "EXECUTED",
+     "note": "DEMO-735636",
+     "t": 1791472235.259806
+    },
+    {
+     "state": "VERIFIED",
+     "note": "DEMO-735636",
+     "t": 1791472236.4788601
+    },
+    {
+     "state": "COMPLETED",
+     "note": "",
+     "t": 1791472236.4808052
+    }
+   ],
+   "result": {
+    "txn_id": "DEMO-735636",
+    "amount": 6500,
+    "at": 1791472236.4807968
+   },
+   "stop": null,
+   "created_at": 1791472208.715607
+  },
+  "T4148": {
+   "id": "T4148",
+   "intent": "PAY_BILL",
+   "bill": {
+    "readable": true,
+    "provider": "Demo Electricity",
+    "consumer_id": "DEMO456",
+    "amount": 6500,
+    "due_date": "2026-10-20",
+    "billing_period": "Sep 2026",
+    "units_consumed": 1420,
+    "summary": "మీ కరెంట్ బిల్లు ₹6,500, చెల్లించాల్సిన చివరి తేదీ అక్టోబర్ 20.",
+    "source": "mock"
+   },
+   "scenario": "normal",
+   "online": true,
+   "lang": "te",
+   "state": "COMPLETED",
+   "user_confirmed": true,
+   "guardian_approved": true,
+   "guardian": {
+    "name": "Ravi (son)",
+    "status": "approved",
+    "requested_at": 1791472302.783263,
+    "decided_at": 1791472311.3688252
+   },
+   "plan": [
+    {
+     "id": 1,
+     "action": "OPEN_PAGE",
+     "target": "/sandbox/index.html?scenario=normal",
+     "say": "Demo Electricity చెల్లింపు సేవను తెరుస్తున్నాను.",
+     "learn": "మీ కరెంట్ కంపెనీ యాప్ లేదా వెబ్‌సైట్ తెరవండి."
+    },
+    {
+     "id": 2,
+     "action": "READ",
+     "target": "page",
+     "say": "ఇది అసలైన సేవేనా అని చూస్తున్నాను.",
+     "learn": "ఏదైనా టైప్ చేసే ముందు వెబ్‌సైట్ పేరు సరైనదో చూసుకోండి."
+    },
+    {
+     "id": 3,
+     "action": "TYPE",
+     "target": "consumer_id",
+     "say": "బిల్లులోని మీ కన్స్యూమర్ నంబర్ టైప్ చేస్తున్నాను.",
+     "learn": "మీ కన్స్యూమర్ నంబర్ టైప్ చేయండి. అది మీ బిల్లుపై ఉంటుంది: DEMO456.",
+     "value": "DEMO456"
+    },
+    {
+     "id": 4,
+     "action": "CLICK",
+     "target": "fetch_bill",
+     "say": "సేవ నుండి మీ బిల్లును తెస్తున్నాను.",
+     "learn": "'Get bill' నొక్కండి."
+    },
+    {
+     "id": 5,
+     "action": "READ",
+     "target": "amount_due",
+     "say": "మొత్తాన్ని మీ కాగితపు బిల్లుతో సరిపోలుస్తున్నాను.",
+     "learn": "స్క్రీన్‌పై మొత్తం మీ బిల్లులో ఉన్నదే అని చూడండి: ₹6,500."
+    },
+    {
+     "id": 6,
+     "action": "CONFIRM",
+     "target": "payment",
+     "say": "నాకు మీ అనుమతి కావాలి.",
+     "learn": "మొత్తం, పేరు సరిగ్గా ఉంటేనే ముందుకు వెళ్ళండి."
+    },
+    {
+     "id": 7,
+     "action": "CLICK",
+     "target": "pay",
+     "say": "చెల్లింపు చేస్తున్నాను.",
+     "learn": "'Pay now' నొక్కండి. OTP అడిగితే, SMS లో వచ్చిన OTP ని మీరే టైప్ చేయండి."
+    },
+    {
+     "id": 8,
+     "action": "READ",
+     "target": "result",
+     "say": "చెల్లింపు పూర్తయిందో చూస్తున్నాను.",
+     "learn": "ఆకుపచ్చ విజయ స్క్రీన్ వచ్చే వరకు వేచి ఉండి, లావాదేవీ నంబర్ రాసుకోండి."
+    }
+   ],
+   "history": [
+    {
+     "state": "CREATED",
+     "note": "",
+     "t": 1791472285.5163279
+    },
+    {
+     "state": "READ",
+     "note": "మీ కరెంట్ బిల్లు ₹6,500, చెల్లించాల్సిన చివరి తేదీ అక్టోబర్ 20.",
+     "t": 1791472285.517783
+    },
+    {
+     "state": "PLANNED",
+     "note": "8 steps",
+     "t": 1791472285.519037
+    },
+    {
+     "state": "RUNNING",
+     "note": "",
+     "t": 1791472285.880743
+    },
+    {
+     "state": "WAITING_CONFIRMATION",
+     "note": "నేను Demo Electricity కి ₹6,500 చెల్లించబోతున్నాను. మీరు అనుమతిస్తారా? ఇది పెద్ద మొత్తం, అందుకే మీ కుటుంబ సభ్యుల అనుమతి కూడా తీసుకుంటాను.",
+     "t": 1791472292.164445
+    },
+    {
+     "state": "WAITING_GUARDIAN",
+     "note": "Ravi (son)",
+     "t": 1791472302.7832708
+    },
+    {
+     "state": "RUNNING",
+     "note": "guardian approved",
+     "t": 1791472311.368833
+    },
+    {
+     "state": "EXECUTED",
+     "note": "DEMO-720821",
+     "t": 1791472315.214727
+    },
+    {
+     "state": "VERIFIED",
+     "note": "DEMO-720821",
+     "t": 1791472316.425426
+    },
+    {
+     "state": "COMPLETED",
+     "note": "",
+     "t": 1791472316.426799
+    }
+   ],
+   "result": {
+    "txn_id": "DEMO-720821",
+    "amount": 6500,
+    "at": 1791472316.426796
+   },
+   "stop": null,
+   "created_at": 1791472285.516324
+  },
+  "T9892": {
+   "id": "T9892",
+   "intent": "PAY_BILL",
+   "bill": {
+    "readable": true,
+    "provider": "Demo Electricity",
+    "consumer_id": "DEMO456",
+    "amount": 6500,
+    "due_date": "2026-10-20",
+    "billing_period": "Sep 2026",
+    "units_consumed": 1420,
+    "summary": "Your electricity bill is ₹6,500, due on 20 October.",
+    "source": "mock"
+   },
+   "scenario": "normal",
+   "online": true,
+   "lang": "en",
+   "state": "COMPLETED",
+   "user_confirmed": true,
+   "guardian_approved": true,
+   "guardian": {
+    "name": "Ravi (son)",
+    "status": "approved",
+    "requested_at": 1791482143.495924,
+    "decided_at": 1791482180.2349398
+   },
+   "plan": [
+    {
+     "id": 1,
+     "action": "OPEN_PAGE",
+     "target": "/sandbox/index.html?scenario=normal",
+     "say": "Opening the Demo Electricity payment service.",
+     "learn": "Open your electricity company's app or website."
+    },
+    {
+     "id": 2,
+     "action": "READ",
+     "target": "page",
+     "say": "Checking that this is the real service.",
+     "learn": "Check the website name is correct before typing anything."
+    },
+    {
+     "id": 3,
+     "action": "TYPE",
+     "target": "consumer_id",
+     "say": "Typing your consumer number from the bill.",
+     "learn": "Type your consumer number. It is printed on your bill: DEMO456.",
+     "value": "DEMO456"
+    },
+    {
+     "id": 4,
+     "action": "CLICK",
+     "target": "fetch_bill",
+     "say": "Getting your bill from the service.",
+     "learn": "Tap 'Get bill'."
+    },
+    {
+     "id": 5,
+     "action": "READ",
+     "target": "amount_due",
+     "say": "Matching the amount with your paper bill.",
+     "learn": "Check the amount on screen is the same as your bill: ₹6,500."
+    },
+    {
+     "id": 6,
+     "action": "CONFIRM",
+     "target": "payment",
+     "say": "I need your approval.",
+     "learn": "Only continue if the amount and name are correct."
+    },
+    {
+     "id": 7,
+     "action": "CLICK",
+     "target": "pay",
+     "say": "Making the payment.",
+     "learn": "Tap 'Pay now'. If it asks for an OTP, type the OTP from your SMS yourself."
+    },
+    {
+     "id": 8,
+     "action": "READ",
+     "target": "result",
+     "say": "Checking the payment went through.",
+     "learn": "Wait for the green success screen and note the transaction number."
+    }
+   ],
+   "history": [
+    {
+     "state": "CREATED",
+     "note": "",
+     "t": 1791482108.1555068
+    },
+    {
+     "state": "READ",
+     "note": "Your electricity bill is ₹6,500, due on 20 October.",
+     "t": 1791482108.157223
+    },
+    {
+     "state": "PLANNED",
+     "note": "8 steps",
+     "t": 1791482108.158006
+    },
+    {
+     "state": "RUNNING",
+     "note": "",
+     "t": 1791482108.522283
+    },
+    {
+     "state": "WAITING_CONFIRMATION",
+     "note": "I am about to pay ₹6,500 to Demo Electricity. Do you approve? This is a large amount, so I will also ask your family to approve.",
+     "t": 1791482114.820673
+    },
+    {
+     "state": "WAITING_GUARDIAN",
+     "note": "Ravi (son)",
+     "t": 1791482143.495931
+    },
+    {
+     "state": "RUNNING",
+     "note": "guardian approved",
+     "t": 1791482180.234943
+    },
+    {
+     "state": "EXECUTED",
+     "note": "DEMO-485958",
+     "t": 1791482183.5464478
+    },
+    {
+     "state": "VERIFIED",
+     "note": "DEMO-485958",
+     "t": 1791482184.7685661
+    },
+    {
+     "state": "COMPLETED",
+     "note": "",
+     "t": 1791482184.770829
+    }
+   ],
+   "result": {
+    "txn_id": "DEMO-485958",
+    "amount": 6500,
+    "at": 1791482184.770794
+   },
+   "stop": null,
+   "created_at": 1791482108.1555011
+  }
+ },
+ "documents": [
+  {
+   "id": "D002",
+   "kind": "letter",
+   "doc_type": "letter",
+   "title": "Pension office: yearly life certificate",
+   "explanation": "This letter is from the pension office. You must give your yearly life certificate by 30 November 2026. If you don't, your pension may stop for a while.",
+   "actions": [
+    "Go to your bank branch before 30 November 2026",
+    "Carry your Aadhaar card and pension (PPO) number",
+    "Ask the bank for the 'life certificate'"
+   ],
+   "deadline": "2026-11-30",
+   "saved_at": 1791472403.0404491
+  },
+  {
+   "id": "D001",
+   "kind": "bill",
+   "provider": "Demo Electricity",
+   "consumer_id": "DEMO456",
+   "amount": 6500.0,
+   "due_date": "2026-10-20",
+   "billing_period": "Sep 2026",
+   "units_consumed": 1420,
+   "saved_at": 1791482081.77742
+  }
+ ]
+}

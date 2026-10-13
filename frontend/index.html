@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Saathi — your digital companion</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23F4A71D'/><text x='50' y='70' font-size='56' text-anchor='middle' fill='%23171B3D' font-family='sans-serif' font-weight='700'>स</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Baloo+Tammudu+2:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ================= Opening title (press Space / click) ================= -->
+<div class="intro" id="intro" role="dialog" aria-label="Saathi">
+  <div class="intro-inner">
+    <div class="wordmark" aria-hidden="true">
+      <span class="w-en">Saathi</span><span class="w-hi">साथी</span><span class="w-te">సాథీ</span>
+    </div>
+    <p class="intro-story">Lakshmi is 68 and lives in Hyderabad. Her electricity bill is due on Friday.
+      Her son lives 600&nbsp;km away. She doesn't know which app to open, and she's afraid of pressing the wrong button.</p>
+    <p class="intro-line">Saathi does it with her, safely, then teaches her how.</p>
+    <button class="intro-go" id="intro-go">Meet Saathi</button>
+    <p class="intro-hint">Press Space to begin</p>
+  </div>
+</div>
+
+<div class="banner" id="banner" hidden></div>
+
+<!-- ================= Top bar ================= -->
+<header class="topbar">
+  <div class="brandmark"><span class="dot" aria-hidden="true">स</span>Saathi <span class="brand-sub">digital companion</span></div>
+  <ol class="rail" id="states" aria-label="Task progress"></ol>
+  <button class="trick-open" id="trick-open">Try to trick Saathi</button>
+</header>
+
+<main class="stage">
+
+  <!-- ================= LEFT: the phone the person uses ================= -->
+  <section class="phone" aria-label="Saathi app">
+    <div class="phone-status">
+      <span id="clock">9:41</span>
+      <span class="speaking-ind" id="speaking-ind" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+      <select id="lang" aria-label="Language">
+        <option value="en">English</option>
+        <option value="hi">हिन्दी</option>
+        <option value="te">తెలుగు</option>
+      </select>
+    </div>
+    <div class="companion" aria-live="polite">
+
+      <!-- 1. Welcome -->
+      <div class="screen active" id="s-welcome">
+        <p class="say" data-i18n-html="welcome"></p>
+        <button class="orb" id="mic" aria-label="Tap and speak">
+          <span class="orb-ring r1"></span><span class="orb-ring r2"></span><span class="orb-core">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-2.08A7 7 0 0 0 19 12h-2Z"/></svg></span>
+        </button>
+        <p class="orb-label" id="orb-label" data-i18n="tap_speak"></p>
+        <div class="transcript" id="transcript"></div>
+        <div class="textask">
+          <input id="ask" data-i18n-ph="type_here" aria-label="Type your request">
+          <button id="ask-go" aria-label="Send"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h13m-5-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+        <div class="chips">
+          <button class="chip" data-sample="sample_pay"></button>
+          <button class="chip" data-sample="sample_explain"></button>
+          <button class="chip" data-sample="sample_status"></button>
+        </div>
+        <div class="spacer"></div>
+        <div class="row2">
+          <button class="btn btn-quiet" id="open-tasks" data-i18n="my_tasks"></button>
+          <button class="btn btn-quiet" id="open-wallet" data-i18n="my_docs"></button>
+        </div>
+      </div>
+
+      <!-- 2. Show the document -->
+      <div class="screen" id="s-document">
+        <p class="say" id="doc-say"></p>
+        <p class="sub" data-i18n="hold_flat"></p>
+        <label class="btn btn-main" for="file" data-i18n="take_photo"></label>
+        <input type="file" id="file" accept="image/*" capture="environment" hidden>
+        <button class="btn btn-quiet" id="sample-bill" data-i18n="use_sample_bill"></button>
+        <button class="btn btn-quiet" id="sample-large" data-i18n="use_sample_large"></button>
+        <button class="btn btn-quiet" id="sample-letter" data-i18n="use_sample_letter"></button>
+        <div class="spacer"></div>
+        <button class="btn-link restart" data-i18n="back"></button>
+      </div>
+
+      <!-- 3. Reading (Saathi's eyes) -->
+      <div class="screen" id="s-reading">
+        <p class="say" data-i18n="reading"></p>
+        <div class="eyes" id="eyes">
+          <img id="preview" alt="">
+          <div class="eyes-layer" id="eyes-layer"></div>
+          <span class="scanline"></span>
+        </div>
+      </div>
+
+      <!-- 4. Bill understood -->
+      <div class="screen" id="s-understood">
+        <p class="say" id="bill-summary"></p>
+        <div class="billcard">
+          <span class="badge" id="bill-source"></span>
+          <div class="big" id="bill-amount"></div>
+          <dl>
+            <dt data-i18n="due"></dt><dd id="bill-due"></dd>
+            <dt data-i18n="consumer_id"></dt><dd id="bill-id"></dd>
+            <dt data-i18n="provider"></dt><dd id="bill-provider"></dd>
+          </dl>
+        </div>
+        <div class="spacer"></div>
+        <button class="btn btn-main" id="do-pay" data-i18n="pay_for_me"></button>
+        <button class="btn btn-quiet" id="do-done" data-i18n="thats_all"></button>
+      </div>
+
+      <!-- 5. Letter explained -->
+      <div class="screen" id="s-explain">
+        <p class="sub" data-i18n="explain_title"></p>
+        <h2 class="doc-title" id="ex-title"></h2>
+        <span class="badge" id="ex-source"></span>
+        <p class="say-md" id="ex-text"></p>
+        <div class="billcard" id="ex-actions-card">
+          <h3 class="mini" data-i18n="what_to_do"></h3>
+          <ol class="actions" id="ex-actions"></ol>
+          <p class="deadline" id="ex-deadline-row"><span data-i18n="deadline"></span>: <b id="ex-deadline"></b></p>
+        </div>
+        <div class="spacer"></div>
+        <button class="btn btn-quiet" id="ex-again" data-i18n="listen"></button>
+        <button class="btn btn-main restart" data-i18n="done"></button>
+      </div>
+
+      <!-- 6. Working -->
+      <div class="screen" id="s-working">
+        <p class="say" id="work-say"></p>
+        <ol class="steps" id="steps"></ol>
+        <div class="spacer"></div>
+        <button class="btn-link" id="work-cancel" data-i18n="cancel"></button>
+      </div>
+
+      <!-- 7. Safety confirmation -->
+      <div class="screen" id="s-confirm">
+        <div class="shield confirm" role="alertdialog" aria-labelledby="confirm-title">
+          <h2 id="confirm-title" data-i18n="check_before"></h2>
+          <div class="amount-xl" id="confirm-amount"></div>
+          <p id="confirm-msg"></p>
+        </div>
+        <div class="spacer"></div>
+        <button class="btn btn-ok" id="yes" data-i18n="yes_pay"></button>
+        <button class="btn btn-stop" id="no" data-i18n="no_stop"></button>
+        <button class="btn-link" id="ask-family" data-i18n="ask_family"></button>
+        <p class="sub center" data-i18n="say_yes_no"></p>
+      </div>
+
+      <!-- 8. Waiting for family -->
+      <div class="screen" id="s-family">
+        <div class="shield family">
+          <div class="icon" aria-hidden="true">👨‍👩‍👦</div>
+          <h2 data-i18n="family_title"></h2>
+          <p id="family-msg"></p>
+        </div>
+        <div class="dots" aria-hidden="true"><span></span><span></span><span></span></div>
+        <p class="sub center small" id="family-link"></p>
+        <div class="spacer"></div>
+        <button class="btn btn-stop" id="family-cancel" data-i18n="cancel"></button>
+      </div>
+
+      <!-- 9. Handoff -->
+      <div class="screen" id="s-handoff">
+        <div class="shield private">
+          <div class="icon" aria-hidden="true">🔐</div>
+          <h2 data-i18n="your_turn"></h2>
+          <p id="handoff-msg"></p>
+        </div>
+        <p class="say-md" data-i18n="handoff_wait"></p>
+        <p class="pointer" data-i18n="handoff_where"></p>
+        <div class="spacer"></div>
+        <button class="btn btn-stop" id="handoff-cancel" data-i18n="cancel"></button>
+      </div>
+
+      <!-- 10. Stopped -->
+      <div class="screen" id="s-stopped">
+        <div class="shield stop" role="alert">
+          <div class="icon" id="stop-icon" aria-hidden="true"></div>
+          <h2 id="stop-title"></h2>
+          <div class="compare" id="compare" hidden>
+            <div class="cmp good"><span id="cmp-a-label"></span><b id="cmp-a"></b></div>
+            <div class="cmp bad"><span id="cmp-b-label"></span><b id="cmp-b"></b></div>
+          </div>
+          <p id="stop-msg"></p>
+          <p class="code" id="stop-code"></p>
+        </div>
+        <div class="spacer"></div>
+        <button class="btn btn-main restart" data-i18n="start_again"></button>
+      </div>
+
+      <!-- 11. Success -->
+      <div class="screen" id="s-success">
+        <div class="success-ring" aria-hidden="true"><svg viewBox="0 0 52 52"><path d="M14 27l8 8 16-17" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <p class="say center" data-i18n="done_checked"></p>
+        <div class="billcard">
+          <dl>
+            <dt data-i18n="amount"></dt><dd id="ok-amount"></dd>
+            <dt data-i18n="transaction"></dt><dd id="ok-txn"></dd>
+            <dt data-i18n="status"></dt><dd class="ok" data-i18n="verified"></dd>
+          </dl>
+        </div>
+        <p class="say-md" data-i18n="teach_q"></p>
+        <div class="row2">
+          <button class="btn btn-main" id="learn-yes" data-i18n="teach_yes"></button>
+          <button class="btn btn-quiet restart" data-i18n="not_now"></button>
+        </div>
+      </div>
+
+      <!-- 12. Learn Mode -->
+      <div class="screen" id="s-learn">
+        <p class="say" data-i18n="next_time"></p>
+        <ol class="learn-list" id="learn-steps"></ol>
+        <div class="spacer"></div>
+        <button class="btn btn-main" id="practise" data-i18n="practise"></button>
+        <button class="btn btn-quiet restart" data-i18n="done"></button>
+      </div>
+
+      <!-- 13. Guided practice -->
+      <div class="screen" id="s-practise">
+        <p class="say" data-i18n="practise_title"></p>
+        <p class="sub" data-i18n="practise_hint"></p>
+        <ol class="learn-list" id="practise-steps"></ol>
+        <div class="spacer"></div>
+        <button class="btn btn-quiet restart" data-i18n="done"></button>
+      </div>
+
+      <!-- 14. Tasks -->
+      <div class="screen" id="s-tasks">
+        <p class="say" data-i18n="my_tasks"></p>
+        <ul class="list" id="task-list"></ul>
+        <div class="spacer"></div>
+        <button class="btn btn-quiet restart" data-i18n="back"></button>
+      </div>
+
+      <!-- 15. Wallet -->
+      <div class="screen" id="s-wallet">
+        <p class="say" data-i18n="my_docs"></p>
+        <p class="sub" data-i18n="wallet_note"></p>
+        <ul class="list" id="doc-list"></ul>
+        <div class="spacer"></div>
+        <button class="btn btn-quiet restart" data-i18n="back"></button>
+      </div>
+    </div>
+    <div class="phone-home" aria-hidden="true"></div>
+  </section>
+
+  <!-- ================= RIGHT: what Saathi is doing ================= -->
+  <section class="machine" aria-label="What Saathi is doing">
+    <div class="agentview">
+      <div class="av-head">
+        <h2>Agent view</h2>
+        <p>Saathi works on the Saathi Service Sandbox, which stands in for a real payment service.</p>
+      </div>
+      <div class="av-frame">
+        <div class="frame-empty" id="frame-empty">
+          <p>When Saathi starts working, you'll see it operate the service here, one step at a time.</p>
+        </div>
+        <iframe id="sandbox" title="Saathi Service Sandbox" hidden></iframe>
+      </div>
+    </div>
+
+    <div class="lower">
+      <div class="feed">
+        <div class="lp-head"><h2>Safety checks</h2><span class="lp-note">Plain rules. The AI never decides whether money moves.</span></div>
+        <ul class="log" id="log"><li class="idle">Every step is checked before it runs and after it runs.</li></ul>
+      </div>
+      <div class="knows">
+        <div class="lp-head"><h2>What Saathi keeps</h2></div>
+        <div id="knows-body">
+          <p class="idle">Nothing yet. Saathi only keeps the fields a task needs.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ================= Judge panel: try to trick Saathi ================= -->
+<aside class="tricks" id="tricks" hidden aria-label="Try to trick Saathi">
+  <div class="tricks-head">
+    <h2>Try to trick Saathi</h2>
+    <button class="tricks-close" id="tricks-close" aria-label="Close">×</button>
+  </div>
+  <p class="tricks-intro">Each button runs the full task against a service that misbehaves. Saathi has to catch it on its own.</p>
+  <div class="trick-list">
+    <button class="trick" data-trick="mismatch"><b>Inflate the amount</b><span>The website asks ₹8,400 for an ₹840 bill.</span></button>
+    <button class="trick" data-trick="suspicious"><b>Swap in a fake website</b><span>A look-alike site on electricity-pay-demo.xyz.</span></button>
+    <button class="trick" data-trick="otp"><b>Ask for the OTP</b><span>The service wants a one-time password.</span></button>
+    <button class="trick" data-trick="offline"><b>Cut the internet</b><span>The connection drops before paying.</span></button>
+    <button class="trick" data-trick="unreadable"><b>Send a blurry photo</b><span>The bill can't be read reliably.</span></button>
+  </div>
+  <div class="score"><span id="score-n">0</span> of 5 tricks caught</div>
+  <details class="demo">
+    <summary>Presenter settings</summary>
+    <div class="ctrls">
+      <label>Scenario
+        <select id="scenario">
+          <option value="normal">Normal ₹840</option>
+          <option value="mismatch">Wrong amount on site</option>
+          <option value="otp">Site asks for OTP</option>
+          <option value="suspicious">Suspicious website</option>
+          <option value="unreadable">Blurry photo</option>
+        </select>
+      </label>
+      <label><input type="checkbox" id="offline"> Simulate offline</label>
+      <label><input type="checkbox" id="mute"> Mute voice</label>
+      <button class="btn-link" id="run-demo">Run the main demo automatically</button>
+      <button class="btn-link" id="show-intro">Show the opening title</button>
+      <a href="/guardian.html" target="_blank" rel="noopener">Open the family approval page</a>
+      <span id="provider"></span>
+    </div>
+  </details>
+</aside>
+
+<script src="i18n.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

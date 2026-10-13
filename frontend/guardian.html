@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Saathi · Family approval</title>
+<!--
+  The family member's view. Open on a phone on the same wifi:
+  http://<laptop-ip>:8000/guardian.html   (the terminal prints this address)
+-->
+<style>
+  :root { --bg:#f6f1e7; --ink:#1d2433; --muted:#5d6475; --line:#e6dccb; --teal:#0f5c5c; --ok:#1e7d4f; --stop:#b3261e; }
+  * { box-sizing:border-box; }
+  [hidden] { display:none !important; }
+  body { margin:0; background:var(--bg); color:var(--ink); font: 18px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  header { background:var(--teal); color:#fff; padding:18px 20px; display:flex; gap:12px; align-items:center; }
+  header .logo { width:40px; height:40px; border-radius:50%; background:#fff; color:var(--teal); display:grid; place-items:center; font-weight:700; }
+  header h1 { margin:0; font-size:1.1rem; } header p { margin:0; opacity:.8; font-size:.8rem; }
+  main { max-width:460px; margin:0 auto; padding:18px 16px 40px; display:flex; flex-direction:column; gap:14px; }
+  .card { background:#fff; border-radius:20px; padding:20px; box-shadow:0 8px 24px rgba(29,36,51,.08); animation: pop .3s ease-out; }
+  @keyframes pop { from { transform:scale(.97); opacity:0; } }
+  .who { color:var(--muted); font-size:.85rem; margin:0 0 6px; }
+  .amt { font-size:2.6rem; font-weight:800; margin:2px 0 8px; }
+  dl { display:grid; grid-template-columns:auto 1fr; gap:4px 14px; margin:0 0 14px; font-size:.9rem; }
+  dt { color:var(--muted); } dd { margin:0; font-weight:600; }
+  .checks { list-style:none; padding:12px; margin:0 0 16px; background:#e3f3ea; border-radius:12px; font-size:.82rem; color:var(--ok); }
+  .checks li::before { content:"✓ "; font-weight:700; }
+  .row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  button { font:inherit; font-weight:700; border:0; border-radius:14px; min-height:58px; cursor:pointer; }
+  .yes { background:var(--ok); color:#fff; } .no { background:#fff; color:var(--stop); border:2px solid var(--stop); }
+  .empty { text-align:center; color:var(--muted); padding:40px 12px; }
+  .empty .big { font-size:48px; }
+  .done { text-align:center; font-weight:700; padding:14px; border-radius:14px; }
+  .done.ok { background:#e3f3ea; color:var(--ok); } .done.no { background:#fbe9e7; color:var(--stop); }
+  footer { text-align:center; color:var(--muted); font-size:.75rem; }
+</style>
+</head>
+<body>
+<header><div class="logo">स</div><div><h1>Saathi · Family approval</h1><p>Approve payments Saathi makes for your family</p></div></header>
+<main>
+  <div id="list"></div>
+  <div class="empty" id="empty"><div class="big">👨‍👩‍👦</div>No payments are waiting for you.<br><small>This page updates by itself.</small></div>
+  <div id="history"></div>
+  <footer>Prototype — payments happen only inside the Saathi Service Sandbox.</footer>
+</main>
+<script>
+const seen = new Set();
+const rupees = (n) => "₹" + Number(n).toLocaleString("en-IN");
+const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+async function refresh() {
+  let reqs = [];
+  try { reqs = await (await fetch("/api/guardian/requests")).json(); } catch { return; }
+  const list = document.getElementById("list");
+  document.getElementById("empty").hidden = reqs.length > 0;
+  const ids = new Set(reqs.map((r) => r.id));
+  [...list.children].forEach((c) => !ids.has(c.dataset.id) && c.remove());
+  for (const r of reqs) {
+    if (list.querySelector(`[data-id="${r.id}"]`)) continue;
+    if (!seen.has(r.id)) { seen.add(r.id); navigator.vibrate?.(200); }
+    const el = document.createElement("div");
+    el.className = "card"; el.dataset.id = r.id;
+    el.innerHTML = `
+      <p class="who">Saathi is asking your approval to pay</p>
+      <div class="amt">${rupees(r.amount)}</div>
+      <dl><dt>To</dt><dd>${esc(r.provider)}</dd><dt>Consumer ID</dt><dd>${esc(r.consumer_id)}</dd>
+          <dt>Due</dt><dd>${esc(r.due_date)}</dd><dt>Task</dt><dd>${esc(r.id)}</dd></dl>
+      <ul class="checks"><li>Amount matches the paper bill</li><li>Website verified as the trusted service</li><li>Your family member already said yes</li></ul>
+      <div class="row"><button class="no">Decline</button><button class="yes">Approve</button></div>`;
+    el.querySelector(".yes").onclick = () => decide(r, true, el);
+    el.querySelector(".no").onclick = () => decide(r, false, el);
+    list.appendChild(el);
+  }
+}
+
+async function decide(r, approved, el) {
+  el.querySelectorAll("button").forEach((b) => (b.disabled = true));
+  await fetch(`/api/guardian/${r.id}`, { method: "POST", headers: { "Content-Type": "application/json" },
+                                         body: JSON.stringify({ approved }) });
+  el.querySelector(".row").outerHTML = `<div class="done ${approved ? "ok" : "no"}">${approved ? "✓ Approved — Saathi will continue" : "✕ Declined — nothing will be paid"}</div>`;
+  el.removeAttribute("data-id");
+  document.getElementById("history").prepend(el);
+}
+
+refresh();
+setInterval(refresh, 1500);
+</script>
+</body>
+</html>
