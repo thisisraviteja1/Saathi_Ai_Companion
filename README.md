@@ -189,15 +189,7 @@ saathi/
 
 This is a hackathon prototype. Payments run on a **demo service**, so no real money moves. All sample documents are synthetic. Scheme eligibility rules are for demonstration only and must be reviewed by a person before real use.
 
-## 👥 Team
 
-Built at **HACKVIBE 2.0** by:
-
-- Bharath Pole · [GitHub](https://github.com/Bharath0408) · [LinkedIn](https://linkedin.com/in/bharath-pole)
-- *Teammate 2*
-- *Teammate 3*
-
----
 
 <div align="center">
 
